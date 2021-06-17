@@ -63,5 +63,117 @@ human-readable
 not executable
 
 ```
+bandit5@bandit:~$ cat $(find ./inhere/ -size 1033c ! -executable) | cut -d " " -f 1 | head -n 1
+DXjZPULLxYr17uwoI01bNLQbtFemEgo7
+bandit5@bandit:~$
+```
+
+# Level 6 - 7
+
+The password for the next level is stored somewhere on the server and has all of the following properties:
+
+owned by user bandit7
+owned by group bandit6
+33 bytes in size
+
+```
+bandit6@bandit:~$ find / -size 33c -user bandit7 -group bandit6 2>/dev/null
+/var/lib/dpkg/info/bandit7.password
+bandit6@bandit:~$ cat /var/lib/dpkg/info/bandit7.password
+HKBPTKQnIay4Fw76bEy8PVxKEDQRKTzs
+```
+
+# Level 7 - 8
+
+The password for the next level is stored in the file data.txt next to the word millionth
+
+```
+bandit7@bandit:~$ ls
+data.txt
+bandit7@bandit:~$ cat data.txt | grep millionth
+millionth	cvX2JJa4CFALtqS87jk27qwqGhBM9plV
+bandit7@bandit:~$
+```
+
+# Level 8 - 9
+
+The password for the next level is stored in the file data.txt and is the only line of text that occurs only once
+
+```
+bandit8@bandit:~$ sort data.txt | uniq -u
+UsvVyFSfZZWbi6wgC7dAFyFuR6jQQUhR
+```
+
+```
+bandit8@bandit:~$ awk '{!seen[$0]++};END{for(i in seen) if(seen[i]==1)print i}' data.txt
+UsvVyFSfZZWbi6wgC7dAFyFuR6jQQUhR
+```
+
+# Level 9 - 10
+
+The password for the next level is stored in the file data.txt in one of the few human-readable strings, preceded by several ‘=’ characters.
+
+```
+bandit9@bandit:~$ ls
+data.txt
+bandit9@bandit:~$ strings data.txt | grep '='
+========== the*2i"4
+=:G e
+========== password
+<I=zsGi
+Z)========== is
+A=|t&E
+Zdb=
+c^ LAh=3G
+*SF=s
+&========== truKLdjsbJ5g7yyJ2X2R0o3a5HQJFuLk
+S=A.H&^
+bandit9@bandit:~$ strings data.txt | grep '==='
+========== the*2i"4
+========== password
+Z)========== is
+&========== truKLdjsbJ5g7yyJ2X2R0o3a5HQJFuLk
+bandit9@bandit:~$ strings data.txt | grep '===' | tail -1
+&========== truKLdjsbJ5g7yyJ2X2R0o3a5HQJFuLk
+bandit9@bandit:~$ strings data.txt | grep '===' | tail -1 | cut -d ' ' -f 2
+truKLdjsbJ5g7yyJ2X2R0o3a5HQJFuLk
+```
+
+# Level 10 - 11
+
+The password for the next level is stored in the file data.txt, which contains base64 encoded data
+
+```
+bandit10@bandit:~$ ls
+data.txt
+bandit10@bandit:~$ cat data.txt | base64 -d
+The password is IFukwKGsFW8MOq3IRFqrxE1hxTNEbUPR
+bandit10@bandit:~$ cat data.txt | base64 -d | awk '{print $(NF)}'
+IFukwKGsFW8MOq3IRFqrxE1hxTNEbUPR
+```
+
+# Level 11 - 12
+
+The password for the next level is stored in the file data.txt, where all lowercase (a-z) and uppercase (A-Z) letters have been rotated by 13 positions
+
+```
+bandit11@bandit:~$ ls
+data.txt
+bandit11@bandit:~$ cat data.txt
+Gur cnffjbeq vf 5Gr8L4qetPEsPk8htqjhRK8XSP6x2RHh
+bandit11@bandit:~$ cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+The password is 5Te8Y4drgCRfCx8ugdwuEX8KFC6k2EUu
+```
+
+# Level 12 - 13
+
+The password for the next level is stored in the file data.txt, which is a hexdump of a file that has been repeatedly compressed. For this level it may be useful to create a directory under /tmp in which you can work using mkdir. For example: mkdir /tmp/myname123. Then copy the datafile using cp, and rename it using mv (read the manpages!)
+
+Useful commands
+```
+
+```
+
+```
 
 ```
