@@ -635,3 +635,387 @@ bandit23@bandit:/tmp/my23folder$ ls /tmp/boopbeep23
 bandit23@bandit:/tmp/my23folder$ cat /tmp/boopbeep23/23_pass.txt
 UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ
 ```
+
+# Level 24 - 25
+
+A daemon is listening on port 30002 and will give you the password for bandit25 if given the password for bandit24 and a secret numeric 4-digit pincode. There is no way to retrieve the pincode except by going through all of the 10000 combinations, called brute-forcing.
+
+```
+bandit24@bandit:~$ mkdir /tmp/mytempdir24
+bandit24@bandit:~$ cd /tmp/mytempdir24
+bandit24@bandit:/tmp/mytempdir24$ touch myListOf.txt
+bandit24@bandit:/tmp/mytempdir24$ for i in {0000..9999}; do echo 'UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ' $(printf "%04d" $i) >> myListOf.txt; done;
+bandit24@bandit:/tmp/mytempdir24$ cat myListOf.txt | nc localhost 30002 >> output.txt
+bandit24@bandit:/tmp/mytempdir24$ head output.txt
+I am the pincode checker for user bandit25. Please enter the password for user bandit24 and the secret pincode on a single line, separated by a space.
+Wrong! Please enter the correct pincode. Try again.
+Wrong! Please enter the correct pincode. Try again.
+Wrong! Please enter the correct pincode. Try again.
+Wrong! Please enter the correct pincode. Try again.
+Wrong! Please enter the correct pincode. Try again.
+Wrong! Please enter the correct pincode. Try again.
+Wrong! Please enter the correct pincode. Try again.
+Wrong! Please enter the correct pincode. Try again.
+Wrong! Please enter the correct pincode. Try again.
+bandit24@bandit:/tmp/mytempdir24$ sort output.txt | uniq -u
+
+Correct!
+Exiting.
+I am the pincode checker for user bandit25. Please enter the password for user bandit24 and the secret pincode on a single line, separated by a space.
+The password of user bandit25 is uNG9O58gUE7snukf3bvZ0rxhtnjzSGzG
+bandit24@bandit:/tmp/mytempdir24$ sort output.txt | uniq -u | grep password
+I am the pincode checker for user bandit25. Please enter the password for user bandit24 and the secret pincode on a single line, separated by a space.
+The password of user bandit25 is uNG9O58gUE7snukf3bvZ0rxhtnjzSGzG
+bandit24@bandit:/tmp/mytempdir24$ sort output.txt | uniq -u | awk '{print $NF}'
+
+Correct!
+Exiting.
+space.
+uNG9O58gUE7snukf3bvZ0rxhtnjzSGzG
+bandit24@bandit:/tmp/mytempdir24$ sort output.txt | uniq -u | awk '{print $NF}' | tail -n -1
+uNG9O58gUE7snukf3bvZ0rxhtnjzSGzG
+```
+
+# Level 25 - 27
+
+Logging in to bandit26 from bandit25 should be fairly easy… The shell for user bandit26 is not /bin/bash, but something else. Find out what it is, how it works and how to break out of it.
+
+1. Make window small
+2. Press v
+3. Set shell
+```
+:set shell=/bin/bash
+```
+4. Run shell
+```
+~/text.txt[RO] [dec= 95] [hex=5F] [pos=0001:0003][16% of 6]
+:shell
+bandit26@bandit:~$ cat /etc/bandit_pass/bandit26
+5czgV9L3Xx8JPOyRbXh6lQbmIOWvPT6Z
+bandit26@bandit:~$ ls
+bandit27-do  text.txt
+bandit26@bandit:~$ ./bandit27-do cat /etc/bandit_pass/bandit27
+3ba3118a22e93127a4ed485be72ef5ea
+bandit26@bandit:~$
+```
+
+# Level 27 - 28
+
+There is a git repository at ssh://bandit27-git@localhost/home/bandit27-git/repo. The password for the user bandit27-git is the same as for the user bandit27.
+
+```
+bandit27@bandit:~$ ls
+bandit27@bandit:~$ mkdir /tmp/my27gitdir && cd /tmp/my27gitdir
+bandit27@bandit:/tmp/my27gitdir$ git clone ssh://bandit27-git@localhost/home/bandit27-git/repo
+Cloning into 'repo'...
+Could not create directory '/home/bandit27/.ssh'.
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is SHA256:98UL0ZWr85496EtCRkKlo20X3OPnyPSB5tB5RPbhczc.
+Are you sure you want to continue connecting (yes/no)? yes
+Failed to add the host to the list of known hosts (/home/bandit27/.ssh/known_hosts).
+This is a OverTheWire game server. More information on http://www.overthewire.org/wargames
+
+bandit27-git@localhost's password:
+remote: Counting objects: 3, done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 0 (delta 0)
+Receiving objects: 100% (3/3), done.
+bandit27@bandit:/tmp/my27gitdir$ ls
+repo
+bandit27@bandit:/tmp/my27gitdir$ cd repo
+bandit27@bandit:/tmp/my27gitdir/repo$ ls
+README
+bandit27@bandit:/tmp/my27gitdir/repo$ cat README
+The password to the next level is: 0ef186ac70e04ea33b4c1853d2526fa2
+bandit27@bandit:/tmp/my27gitdir/repo$
+bandit27@bandit:/tmp/my27gitdir/repo$ cat README | awk '{print $NF}'
+0ef186ac70e04ea33b4c1853d2526fa2
+```
+
+# Level 28 - 29
+
+There is a git repository at ssh://bandit28-git@localhost/home/bandit28-git/repo. The password for the user bandit28-git is the same as for the user bandit28.
+
+Clone the repository and find the password for the next level.
+
+```
+bandit28@bandit:~$ mkdir /tmp/my28tempfolder && cd /tmp/my28tempfolder && git clone ssh://bandit28-git@localhost/home/bandit28-git/repo
+Cloning into 'repo'...
+Could not create directory '/home/bandit28/.ssh'.
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is SHA256:98UL0ZWr85496EtCRkKlo20X3OPnyPSB5tB5RPbhczc.
+Are you sure you want to continue connecting (yes/no)? yes
+Failed to add the host to the list of known hosts (/home/bandit28/.ssh/known_hosts).
+This is a OverTheWire game server. More information on http://www.overthewire.org/wargames
+
+bandit28-git@localhost's password:
+remote: Counting objects: 9, done.
+remote: Compressing objects: 100% (6/6), done.
+remote: Total 9 (delta 2), reused 0 (delta 0)
+Receiving objects: 100% (9/9), done.
+Resolving deltas: 100% (2/2), done.
+bandit28@bandit:/tmp/my28tempfolder$ ls
+repo
+bandit28@bandit:/tmp/my28tempfolder$ cd repo/
+bandit28@bandit:/tmp/my28tempfolder/repo$ ls
+README.md
+bandit28@bandit:/tmp/my28tempfolder/repo$ cat README.md
+# Bandit Notes
+Some notes for level29 of bandit.
+
+## credentials
+
+- username: bandit29
+- password: xxxxxxxxxx
+
+bandit28@bandit:/tmp/my28tempfolder/repo$ git log -p
+commit edd935d60906b33f0619605abd1689808ccdd5ee
+Author: Morla Porla <morla@overthewire.org>
+Date:   Thu May 7 20:14:49 2020 +0200
+
+    fix info leak
+
+diff --git a/README.md b/README.md
+index 3f7cee8..5c6457b 100644
+--- a/README.md
++++ b/README.md
+@@ -4,5 +4,5 @@ Some notes for level29 of bandit.
+ ## credentials
+
+ - username: bandit29
+-- password: bbc96594b4e001778eee9975372716b2
++- password: xxxxxxxxxx
+
+
+commit c086d11a00c0648d095d04c089786efef5e01264
+Author: Morla Porla <morla@overthewire.org>
+Date:   Thu May 7 20:14:49 2020 +0200
+
+bandit28@bandit:/tmp/my28tempfolder/repo$ git log -p | grep password
+-- password: bbc96594b4e001778eee9975372716b2
++- password: xxxxxxxxxx
+-- password: <TBD>
++- password: bbc96594b4e001778eee9975372716b2
++- password: <TBD>
+bandit28@bandit:/tmp/my28tempfolder/repo$ git log -p | grep password | head -n 1 | awk '{print $NF}'
+bbc96594b4e001778eee9975372716b2
+```
+
+# Level 29 - 30
+
+There is a git repository at ssh://bandit29-git@localhost/home/bandit29-git/repo. The password for the user bandit29-git is the same as for the user bandit29
+
+```
+bandit29@bandit:~$ mkdir /tmp/my29tempfolder && cd /tmp/my29tempfolder && git clone ssh://bandit29-git@localhost/home/bandit29-git/repo
+Cloning into 'repo'...
+Could not create directory '/home/bandit29/.ssh'.
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is SHA256:98UL0ZWr85496EtCRkKlo20X3OPnyPSB5tB5RPbhczc.
+Are you sure you want to continue connecting (yes/no)? yes
+Failed to add the host to the list of known hosts (/home/bandit29/.ssh/known_hosts).
+This is a OverTheWire game server. More information on http://www.overthewire.org/wargames
+
+bandit29-git@localhost's password:
+remote: Counting objects: 16, done.
+remote: Compressing objects: 100% (11/11), done.
+Receiving objects: 100% (16/16), 1.43 KiB | 0 bytes/s, done.
+remote: Total 16 (delta 2), reused 0 (delta 0)
+Resolving deltas: 100% (2/2), done.
+bandit29@bandit:/tmp/my29tempfolder$ ls
+repo
+bandit29@bandit:/tmp/my29tempfolder$ cd repo
+bandit29@bandit:/tmp/my29tempfolder/repo$ ls -lah
+total 16K
+drwxr-sr-x 3 bandit29 root 4.0K Jun 20 00:13 .
+drwxr-sr-x 3 bandit29 root 4.0K Jun 20 00:13 ..
+drwxr-sr-x 8 bandit29 root 4.0K Jun 20 00:13 .git
+-rw-r--r-- 1 bandit29 root  131 Jun 20 00:13 README.md
+bandit29@bandit:/tmp/my29tempfolder/repo$ cat README.md
+# Bandit Notes
+Some notes for bandit30 of bandit.
+
+## credentials
+
+- username: bandit30
+- password: <no passwords in production!>
+
+bandit29@bandit:/tmp/my29tempfolder/repo$ git branch -a
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/dev
+  remotes/origin/master
+  remotes/origin/sploits-dev
+bandit29@bandit:/tmp/my29tempfolder/repo$ git checkout dev
+Branch dev set up to track remote branch dev from origin.
+Switched to a new branch 'dev'
+bandit29@bandit:/tmp/my29tempfolder/repo$ ls
+code  README.md
+bandit29@bandit:/tmp/my29tempfolder/repo$ git log -p | grep password
+-- password: <no passwords in production!>
++- password: 5b90576bedb2cc04c86a9e924ce42faf
+ - password: <no passwords in production!>
++- password: <no passwords in production!>
+bandit29@bandit:/tmp/my29tempfolder/repo$ git log -p | grep password | head -n 2 | tail -n 1
++- password: 5b90576bedb2cc04c86a9e924ce42faf
+bandit29@bandit:/tmp/my29tempfolder/repo$ git log -p | grep password | head -n 2 | tail -n 1 | awk '{print $NF}'
+5b90576bedb2cc04c86a9e924ce42faf
+```
+
+# Level 30 - 31
+
+There is a git repository at ssh://bandit30-git@localhost/home/bandit30-git/repo. The password for the user bandit30-git is the same as for the user bandit30.
+
+```
+bandit30@bandit:~$ mkdir /tmp/my30tempfolder && cd /tmp/my30tempfolder && git clone ssh://bandit30-git@localhost/home/bandit30-git/repo
+mkdir: cannot create directory ‘/tmp/my30tempfolder’: File exists
+bandit30@bandit:~$ rm -f /tmp/my30tempfolder
+rm: cannot remove '/tmp/my30tempfolder': Is a directory
+bandit30@bandit:~$ rm -r /tmp/my30tempfolder
+bandit30@bandit:~$ mkdir /tmp/my30tempfolder && cd /tmp/my30tempfolder && git clone ssh://bandit30-git@localhost/home/bandit30-git/repo
+Cloning into 'repo'...
+Could not create directory '/home/bandit30/.ssh'.
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is SHA256:98UL0ZWr85496EtCRkKlo20X3OPnyPSB5tB5RPbhczc.
+Are you sure you want to continue connecting (yes/no)? yes
+Failed to add the host to the list of known hosts (/home/bandit30/.ssh/known_hosts).
+This is a OverTheWire game server. More information on http://www.overthewire.org/wargames
+
+bandit30-git@localhost's password:
+remote: Counting objects: 4, done.
+remote: Total 4 (delta 0), reused 0 (delta 0)
+Receiving objects: 100% (4/4), done.
+bandit30@bandit:/tmp/my30tempfolder$ ls
+repo
+bandit30@bandit:/tmp/my30tempfolder$ cd repo
+bandit30@bandit:/tmp/my30tempfolder/repo$ ls
+README.md
+bandit30@bandit:/tmp/my30tempfolder/repo$ cat README.md
+just an epmty file... muahaha
+bandit30@bandit:/tmp/my30tempfolder/repo$ git log -p
+commit 3aefa229469b7ba1cc08203e5d8fa299354c496b
+Author: Ben Dover <noone@overthewire.org>
+Date:   Thu May 7 20:14:54 2020 +0200
+
+    initial commit of README.md
+
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000..029ba42
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1 @@
++just an epmty file... muahaha
+bandit30@bandit:/tmp/my30tempfolder/repo$ git branch -a
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+bandit30@bandit:/tmp/my30tempfolder/repo$ grep -r "password" ./.git
+bandit30@bandit:/tmp/my30tempfolder/repo$ ls -lah
+total 16K
+drwxr-sr-x 3 bandit30 root 4.0K Jun 20 00:18 .
+drwxr-sr-x 3 bandit30 root 4.0K Jun 20 00:18 ..
+drwxr-sr-x 8 bandit30 root 4.0K Jun 20 00:18 .git
+-rw-r--r-- 1 bandit30 root   30 Jun 20 00:18 README.md
+bandit30@bandit:/tmp/my30tempfolder/repo$ cd .git
+bandit30@bandit:/tmp/my30tempfolder/repo/.git$ ls
+branches  config  description  HEAD  hooks  index  info  logs  objects  packed-refs  refs
+bandit30@bandit:/tmp/my30tempfolder/repo/.git$ cat description
+Unnamed repository; edit this file 'description' to name the repository.
+bandit30@bandit:/tmp/my30tempfolder/repo/.git$ cat config
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = ssh://bandit30-git@localhost/home/bandit30-git/repo
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+bandit30@bandit:/tmp/my30tempfolder/repo/.git$ grep -irn "password" ./
+bandit30@bandit:/tmp/my30tempfolder/repo/.git/info$ git tag
+secret
+bandit30@bandit:/tmp/my30tempfolder/repo/.git/info$ git show secret
+47e603bb428404d265f59c42920d81e5
+```
+
+# Level 31 - 32
+
+There is a git repository at ssh://bandit31-git@localhost/home/bandit31-git/repo. The password for the user bandit31-git is the same as for the user bandit31.
+
+Clone the repository and find the password for the next level.
+
+```
+bandit31@bandit:~$ mkdir /tmp/my31tempfolder && cd /tmp/my31tempfolder && git clone ssh://bandit31-git@localhost/home/bandit31-git/repo && cd repo
+Cloning into 'repo'...
+Could not create directory '/home/bandit31/.ssh'.
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is SHA256:98UL0ZWr85496EtCRkKlo20X3OPnyPSB5tB5RPbhczc.
+Are you sure you want to continue connecting (yes/no)? yes
+Failed to add the host to the list of known hosts (/home/bandit31/.ssh/known_hosts).
+This is a OverTheWire game server. More information on http://www.overthewire.org/wargames
+
+bandit31-git@localhost's password:
+remote: Counting objects: 4, done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 4 (delta 0), reused 0 (delta 0)
+Receiving objects: 100% (4/4), done.
+bandit31@bandit:/tmp/my31tempfolder/repo$ cat README.md
+This time your task is to push a file to the remote repository.
+
+Details:
+    File name: key.txt
+    Content: 'May I come in?'
+    Branch: master
+
+bandit31@bandit:/tmp/my31tempfolder/repo$ echo "May I come in?" > key.txt
+bandit31@bandit:/tmp/my31tempfolder/repo$ git add key.txt
+The following paths are ignored by one of your .gitignore files:
+key.txt
+Use -f if you really want to add them.
+bandit31@bandit:/tmp/my31tempfolder/repo$ git add -f key.txt
+bandit31@bandit:/tmp/my31tempfolder/repo$ git commit -a -m "Add key"
+[master d5c9507] Add key
+ 1 file changed, 1 insertion(+)
+ create mode 100644 key.txt
+bandit31@bandit:/tmp/my31tempfolder/repo$ git push
+Could not create directory '/home/bandit31/.ssh'.
+The authenticity of host 'localhost (127.0.0.1)' can't be established.
+ECDSA key fingerprint is SHA256:98UL0ZWr85496EtCRkKlo20X3OPnyPSB5tB5RPbhczc.
+Are you sure you want to continue connecting (yes/no)? yes
+Failed to add the host to the list of known hosts (/home/bandit31/.ssh/known_hosts).
+This is a OverTheWire game server. More information on http://www.overthewire.org/wargames
+
+bandit31-git@localhost's password:
+Counting objects: 3, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 319 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+remote: ### Attempting to validate files... ####
+remote:
+remote: .oOo.oOo.oOo.oOo.oOo.oOo.oOo.oOo.oOo.oOo.
+remote:
+remote: Well done! Here is the password for the next level:
+remote: 56a9bf19c63d650ce78e6ec0354ee45e
+remote:
+remote: .oOo.oOo.oOo.oOo.oOo.oOo.oOo.oOo.oOo.oOo.
+remote:
+To ssh://localhost/home/bandit31-git/repo
+ ! [remote rejected] master -> master (pre-receive hook declined)
+error: failed to push some refs to 'ssh://bandit31-git@localhost/home/bandit31-git/repo'
+```
+
+# Level 32 - 33
+
+After all this git stuff its time for another escape. Good luck!
+
+```
+WELCOME TO THE UPPERCASE SHELL
+>> $0
+$ echo $0
+sh
+$ cat /etc/bandit_pass/bandit33
+c9c3199ddf4121b10cf581a98d51caee
+```
